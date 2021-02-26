@@ -12,13 +12,13 @@ namespace CRUD_OPERATION.Controllers
     public class StudentController : ApiController
     {
 
-        
+
         /// <summary>
         /// //////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// To get all the students record available in the database
         /// </summary>
         /// <returns></returns>
-        
+
         [Route("Api/GetAll")]
         public IHttpActionResult GetAllStudents()
         {
@@ -28,11 +28,11 @@ namespace CRUD_OPERATION.Controllers
             {
                 students = context.student.Include("StudentAddress")
                     .Select(s => new StudentViewModel()
-                            {
-                                Id = s.Id,
-                                FirstName = s.FirstName,
-                                LastName = s.LastName
-                            }).ToList<StudentViewModel>();
+                    {
+                        Id = s.Id,
+                        FirstName = s.FirstName,
+                        LastName = s.LastName
+                    }).ToList<StudentViewModel>();
             }
 
             if (students.Count == 0)
@@ -53,22 +53,22 @@ namespace CRUD_OPERATION.Controllers
         public IHttpActionResult GetAllStudentsWithAddress(Boolean IncludeAddress)
         {
             ICollection<StudentViewModel> students = null;
-            using(var context = new ManagementContext())
+            using (var context = new ManagementContext())
             {
                 students = context.student.Include("StudentAddress")
                     .Select(s => new StudentViewModel()
                     {
-                        Id=s.Id,
+                        Id = s.Id,
                         FirstName = s.FirstName,
-                        LastName=s.LastName,
-                        StudentAddress=IncludeAddress==false? null: new AddressViewModel()
+                        LastName = s.LastName,
+                        StudentAddress = IncludeAddress == false ? null : new AddressViewModel()
                         {
-                            Id=s.StudentAddress.Id,
-                            StudentId=s.StudentAddress.StudentId,
-                            Address1=s.StudentAddress.Address1,
-                            Address2=s.StudentAddress.Address2,
-                            city=s.StudentAddress.city,
-                            state=s.StudentAddress.state
+                            Id = s.StudentAddress.Id,
+                            StudentId = s.StudentAddress.StudentId,
+                            Address1 = s.StudentAddress.Address1,
+                            Address2 = s.StudentAddress.Address2,
+                            city = s.StudentAddress.city,
+                            state = s.StudentAddress.state
                         }
                     }).ToList<StudentViewModel>();
             }
@@ -92,10 +92,10 @@ namespace CRUD_OPERATION.Controllers
         public IHttpActionResult GetStudentByid(int id)
         {
             StudentViewModel student = null;
-            using(var context = new ManagementContext())
+            using (var context = new ManagementContext())
             {
                 student = context.student.Include("StudentAddress")
-                    .Where(s=>s.Id==id)
+                    .Where(s => s.Id == id)
                     .Select(s => new StudentViewModel()
                     {
                         Id = s.Id,
@@ -117,7 +117,7 @@ namespace CRUD_OPERATION.Controllers
         /// <param name="name"></param>
         /// <returns></returns>
         //Get students by name
-        
+
         [Route("Api/Get/Name")]
         public IHttpActionResult GetStudentByName(string name)
         {
@@ -183,23 +183,23 @@ namespace CRUD_OPERATION.Controllers
                 {
                     FirstName = student.FirstName,
                     LastName = student.LastName,
-                    cgpa=student.cgpa,
-                    email=student.email,
+                    cgpa = student.cgpa,
+                    email = student.email,
                     StudentAddress = new StudentAddress()
                     {
                         Address1 = student.StudentAddress.Address1,
-                    Address2 = student.StudentAddress.Address2,
-                    city = student.StudentAddress.city,
-                    state = student.StudentAddress.state
+                        Address2 = student.StudentAddress.Address2,
+                        city = student.StudentAddress.city,
+                        state = student.StudentAddress.state
                     }
                 });
-                
+
 
                 ctx.SaveChanges();
-               /* ctx.address.Add(new StudentAddress()
+                ctx.address.Add(new StudentAddress()
                 {
-                    
-                });*/
+
+                });
             }
 
             return Ok(200);
@@ -218,7 +218,7 @@ namespace CRUD_OPERATION.Controllers
             {
                 return BadRequest("Model state is inValid");
             }
-            Student existingStudent=null;
+            Student existingStudent = null;
             StudentAddress existingStudentAddress = null;
             using (var context = new ManagementContext())
             {
@@ -236,7 +236,7 @@ namespace CRUD_OPERATION.Controllers
                 existingStudentAddress.Address1 = student.StudentAddress.Address1;
                 existingStudentAddress.Address2 = student.StudentAddress.Address2;
                 existingStudentAddress.city = student.StudentAddress.city;
-                existingStudentAddress.state= student.StudentAddress.state;
+                existingStudentAddress.state = student.StudentAddress.state;
 
                 context.SaveChanges();
 
@@ -261,7 +261,7 @@ namespace CRUD_OPERATION.Controllers
             }
             Student StudentToBeDeleted = null;
             StudentAddress StudentAddressToBeDeleted = null;
-            using (var context= new ManagementContext())
+            using (var context = new ManagementContext())
             {
                 try
                 {
@@ -272,7 +272,7 @@ namespace CRUD_OPERATION.Controllers
                 {
                     return BadRequest("Something Went Wrong");
                 }
-                if(StudentToBeDeleted==null || StudentAddressToBeDeleted == null)
+                if (StudentToBeDeleted == null || StudentAddressToBeDeleted == null)
                 {
                     return BadRequest("The ID you enetered does not exist in our Database");
                 }
